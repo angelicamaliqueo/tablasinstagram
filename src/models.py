@@ -8,31 +8,46 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class User (Base):
+    __tablename__ = "user"
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    User_correo = Column(String(50))
+    User_Contraseña = Column(String(50))
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+class Capitulo (Base):
+    __tablename__ = "capitulo"
+    id = Column (Integer, primary_key=True)
+    capitulo_capitulo = Column (String(70))
+    capitulo_nombre = Column (String(70))
+    capitulo_informacion =Column (String(70))
+    capitulo_detalle = Column (String(70))
 
-    def to_dict(self):
-        return {}
+class Personaje (Base):
+    __tablename__ = "capitulo"
+    id = Column (Integer,primary_key=True)
+    nombre = Column (String(70))
+    imagen = Column (String(70))
+    specie = Column (String(70))
 
-## Draw from SQLAlchemy base
+class FavoritoCapitulo(Base):
+    __tablename__ = "FavoritoCapitulo"
+    id = Column (Integer,primary_key=True)
+    capitulo_id = Column (Integer, ForeignKey("capitulo.id"))
+    relacioncapitulo = relationship(Capitulo)
+    relacionuser = relationship(User)
+
+class FavoritoPersonaje (Base):
+    __tablename__= "FavoritoPersonaje" 
+    id= Column (Integer,premary_Key= True)
+    FavoritoPersonaje_id = Column(Integer, ForeignKey("personaje.id"))
+    user_id = Column(Integer, ForeignKey("user.id")) 
+    relacionpersonaje = relationship(Personaje)
+    relacionuser = relationship(User)  
+
+## Draw from SQLALchemy base
 try:
     result = render_er(Base, 'diagram.png')
-    print("Success! Check the diagram.png file")
+    print("Succes! Check the diagram.png file")
 except Exception as e:
-    print("There was a problem genering the diagram")
-    raise e
+    print("There was a problem genering the diagram") 
+    raise e   
